@@ -137,7 +137,7 @@ void PwmMotor::move_tracks(float base, float turn, int left_pin, int right_pin) 
   left_track = enforce_range(left_track);
   right_track = enforce_range(right_track);
   if (_debug) {
-    Serial.println("TRACK VALUES (L - R):"):
+    Serial.println("TRACK VALUES (L - R):");
     Serial.print(left_track);
     Serial.println(" - ");
     Serial.println(right_track);
