@@ -27,7 +27,9 @@ int value_range[4][3] = {  // min, mid, max
   {1128, 1500, 1885},  // high is down, low is up
   {1060, 1450, 1795},  // high is right, low is left
 };
-PwmMotor signal_reader(true, MOTOR_LOW, MOTOR_MID, MOTOR_HIGH, THRESHOLD);
+int modfied_motor_high = MOTOR_HIGH * MOTOR_MODIFIER;
+int modfied_motor_low = MOTOR_LOW / MOTOR_MODIFIER;
+PwmMotor signal_reader(true, modfied_motor_low, MOTOR_MID, modfied_motor_high, THRESHOLD);
 bool debug = true;
 // MAIN LOOPS
 void setup() {
