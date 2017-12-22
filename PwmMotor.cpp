@@ -29,7 +29,7 @@ int PwmMotor::read_pwm_channel(byte pwm_pin) {
   // read the value
   // this can take up to 20ms, timeout in 1s
   int value_read = pulseIn(pwm_pin, HIGH);
-  if (_debug) {
+  if (false) {
     // print the value for debug purposes
     Serial.println("pwm read on pin ");
     Serial.print(pwm_pin);
@@ -124,12 +124,21 @@ void PwmMotor::move_tracks(float base, float turn, int left_pin, int right_pin) 
     } else if (turn < _motor_neutral) {
       left_track = left_track - difference;
     }
-  } else {
+  } else if (base < _motor_neutral) {
     // backwards, reverse logic
     if (turn > _motor_neutral) {
       right_track = right_track + difference;
     } else if (turn < _motor_neutral) {
       left_track = left_track + difference;
+    }
+  } else if ((base == 128.00) && (turn != 128.00)) {
+    // spot turn
+    if (turn > _motor_neutral) {
+      left_track = _motor_high;
+      right_track = 0;
+    } else {
+      left_track = 0;
+      right_track = _motor_high;
     }
   }
 

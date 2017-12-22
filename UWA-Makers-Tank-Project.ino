@@ -2,17 +2,17 @@
 #include "PwmMotor.h"
 
 // const
-byte PWM_RIGHT_H = 1;  // channel 1
-byte PWM_RIGHT_V = 2;  // channel 2
-byte PWM_LEFT_V = 3;  // channel 3
-byte PWM_LEFT_H = 4;  // channel 4
-int LEFT_TRACK = 5;  // pin 5
-int RIGHT_TRACK = 6; // pin 6
+byte PWM_RIGHT_H = 3;  // channel 1
+byte PWM_RIGHT_V = 5;  // channel 2
+byte PWM_LEFT_V = 6;  // channel 3
+byte PWM_LEFT_H = 9;  // channel 4
+int LEFT_TRACK = 10;
+int RIGHT_TRACK = 11;
 int MOTOR_HIGH = 255;
 int MOTOR_LOW = 0;
 int MOTOR_MID = 128;
 int NUMBER_OF_CHANNELS = 4;
-int THRESHOLD = 50;
+int THRESHOLD = 100;
 // options
 float MOTOR_MODIFIER = 1.0;  // modify power of motor
 // vars
@@ -44,10 +44,11 @@ void loop() {
   for (c_count=0; c_count < NUMBER_OF_CHANNELS; c_count++) {
     pwm_values[c_count] = signal_reader.read_pwm_channel(pins[c_count]);
   }
-  int vertical_motor = signal_reader.translate_pwm_motor(pwm_values[2],
-                                                         value_range[2],
-                                                         true);  // channel 3
+  int vertical = signal_reader.translate_pwm_motor(pwm_values[2],
+                                                   value_range[2],
+                                                   false);
   int horizontal = signal_reader.translate_pwm_motor(pwm_values[3],
                                                      value_range[3],
-                                                     false);  // channel 4
+                                                     false);
+  signal_reader.move_tracks(vertical, horizontal, LEFT_TRACK, RIGHT_TRACK);
 }
