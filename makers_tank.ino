@@ -14,7 +14,7 @@ int MOTOR_MID = 128;
 int NUMBER_OF_CHANNELS = 4;
 int THRESHOLD = 100;
 // options
-float MOTOR_MODIFIER = 1.0;  // modify power of motor
+float MOTOR_MODIFIER = 0.25;  // modify power of motor
 // vars
 int pins[4] = {PWM_RIGHT_H,
                PWM_RIGHT_V,
