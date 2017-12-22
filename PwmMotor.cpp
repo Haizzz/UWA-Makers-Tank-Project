@@ -134,11 +134,9 @@ void PwmMotor::move_tracks(float base, float turn, int left_pin, int right_pin) 
   } else if ((base == 128.00) && (turn != 128.00)) {
     // spot turn
     if (turn > _motor_neutral) {
-      left_track = _motor_high;
-      right_track = 0;
+      left_track = _motor_neutral + difference;
     } else {
-      left_track = 0;
-      right_track = _motor_high;
+      right_track = _motor_neutral + difference;
     }
   }
 
