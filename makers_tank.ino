@@ -27,16 +27,8 @@ int value_range[4][3] = {  // min, mid, max
   {1128, 1500, 1885},  // high is down, low is up
   {1060, 1450, 1795},  // high is right, low is left
 };
-PwmMotor signal_reader(true, MOTOR_MID, THRESHOLD);
+PwmMotor signal_reader(true, MOTOR_LOW, MOTOR_MID, MOTOR_HIGH, THRESHOLD);
 bool debug = true;
-// FUNCTION DEFINITIONS
-void move_track(int track_values[2]) {
-  /*
-   * Control 2 tracks by values in array given
-   * @param track_values      int[2]    values for the 2 tracks (ms) from pwm
-   * @return none
-   */
-}
 // MAIN LOOPS
 void setup() {
   // put your setup code here, to run once:
@@ -52,6 +44,10 @@ void loop() {
   for (c_count=0; c_count < NUMBER_OF_CHANNELS; c_count++) {
     pwm_values[c_count] = signal_reader.read_pwm_channel(pins[c_count]);
   }
-  int vertical_motor = signal_reader.translate_pwm_motor(pwm_values[2], value_range[2], true);  // channel 3
-  int horizontal = signal_reader.translate_pwm_motor(pwm_values[3], value_range[3], false);  // channel 4
+  int vertical_motor = signal_reader.translate_pwm_motor(pwm_values[2],
+                                                         value_range[2],
+                                                         true);  // channel 3
+  int horizontal = signal_reader.translate_pwm_motor(pwm_values[3],
+                                                     value_range[3],
+                                                     false);  // channel 4
 }

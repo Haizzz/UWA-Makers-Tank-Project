@@ -1,0 +1,6 @@
+channel 1: right hort 3
+channel 2: right vert 5
+channel 3: left vert 6
+channel 4: left hort 9
+
+no reverse
