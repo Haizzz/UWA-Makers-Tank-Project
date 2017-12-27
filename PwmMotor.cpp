@@ -59,14 +59,13 @@ int enforce_range(float value) {
   return value;
 }
 
-int PwmMotor::translate_pwm_motor(int pwm_reading, int value_range[3], bool reverse) {
+int PwmMotor::translate_pwm_motor(int pwm_reading, int value_range[4]) {
   /*
    * Translate a pwm reading into pwm value to control the motor.
    * Value can be from 0 - 255
    *
    * @param pwm_reading       int       pwm value reading
-   * @param value_range       int[2]    minimum and maximum pwm value
-   * @param reverse           int       whether or not the values should be reversed
+   * @param value_range       int[4]    pwm pin calibrations
    * @return                  float     value for motor (0 - 255)
    */
   float motor_value = 0;
@@ -80,7 +79,7 @@ int PwmMotor::translate_pwm_motor(int pwm_reading, int value_range[3], bool reve
     return _motor_neutral;
   }
   // see if it's positive or negative
-  if (reverse) {
+  if (value_range[3]) {
     int difference = relative_value - value_range[1];
     // |---o--|------|
     if (difference > 0) {
