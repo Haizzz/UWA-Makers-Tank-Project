@@ -1,6 +1,7 @@
 // imports
 #include "PwmMotor.h"
 #include "Settings.h"
+#include "I2C.h"
 
 // vars
 Settings settings = c1_configs;  // see Settings.cpp
@@ -16,6 +17,7 @@ PwmMotor pwm_manager(settings.DEBUG,
                      settings.MOTOR_MID,
                      modfied_motor_high,
                      settings.THRESHOLD);
+Connection i2c(settings.DEBUG, 1);
 // MAIN LOOPS
 void setup() {
   // put your setup code here, to run once:

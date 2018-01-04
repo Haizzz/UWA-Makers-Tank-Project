@@ -22,5 +22,6 @@ Settings c1_configs = {
       {1128, 1500, 1885, false}, // left v
       {1060, 1450, 1795, false}, // left h
     },
-    true,
+    true, // debug mode
+    [4,5] // I2C pins (A4, A5) 
 };
