@@ -1,6 +1,7 @@
 // imports
 #include "PwmMotor.h"
 #include "Settings.h"
+#include "I2C.h"
 
 // vars
 Settings settings = c1_configs;  // see Settings.cpp
@@ -16,12 +17,14 @@ PwmMotor pwm_manager(settings.DEBUG,
                      settings.MOTOR_MID,
                      modfied_motor_high,
                      settings.THRESHOLD);
+I2C i2c(settings.DEBUG, settings.I2C_ARDUINO);
 // MAIN LOOPS
 void setup() {
   // put your setup code here, to run once:
   if (settings.DEBUG) {
     Serial.begin(115200);
   }
+  i2c.connect();
 }
 
 void loop() {
@@ -37,4 +40,7 @@ void loop() {
                                                    settings.VALUE_RANGE[3]);
   pwm_manager.move_tracks(vertical, horizontal,
                           settings.LEFT_TRACK, settings.RIGHT_TRACK);
+
+  String movement = horizontal + " " + vertical;
+  i2c.sendData(settings.I2C_RASPBERRY_PI, "motor control", movement);
 }
