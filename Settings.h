@@ -20,7 +20,8 @@ struct Settings {
     float MOTOR_MODIFIER;
     int VALUE_RANGE[4][4];
     bool DEBUG;
-    int I2C_PINS[2];
+    int I2C_ARDUINO;
+    int I2C_RASPBERRY_PI;
 };
 
 extern Settings c1_configs;

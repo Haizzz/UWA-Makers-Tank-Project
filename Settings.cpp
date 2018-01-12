@@ -23,5 +23,6 @@ Settings c1_configs = {
       {1060, 1450, 1795, false}, // left h
     },
     true, // debug mode
-    [4,5] // I2C pins (A4, A5) 
+    12, // I2C arduino
+    13, // I2C raspberry pi    
 };
