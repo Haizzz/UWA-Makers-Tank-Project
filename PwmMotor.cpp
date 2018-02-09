@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "PwmMotor.h"
+#include <Servo.h>
 // vars
 bool _debug;
 int _motor_low;
@@ -105,15 +106,15 @@ int PwmMotor::translate_pwm_motor(int pwm_reading, int value_range[4]) {
   return motor_value;
 }
 
-void PwmMotor::move_tracks(float base, float turn, int left_pin, int right_pin) {
+void PwmMotor::move_tracks(float base, float turn, Servo left_m, Servo right_m) {
   /*
    * Calculate the speed of 2 tracks and write them to pin
    *
-   * @param base      float     the base speed value of 2 tracks
-   * @param turn      float     the value of turn to adjust by
-   * @param left_pin  int       pin number for the left track
-   * @param right_pin int       pin number for the right track
-   * @return          none
+   * @param base        float     the base speed value of 2 tracks
+   * @param turn        float     the value of turn to adjust by
+   * @param left_m      Servo     Servo instance for the left track
+   * @param right_m     Servo     Servo instance for the right track
+   * @return            none
    */
   float left_track = base;
   float right_track = base;
@@ -155,6 +156,6 @@ void PwmMotor::move_tracks(float base, float turn, int left_pin, int right_pin) 
     Serial.println(right_track);
   }
   // write to motor
-  analogWrite(left_pin, left_track);
-  analogWrite(right_pin, right_track);
+  left_m.write(left_track);
+  right_m.write(right_track);
 }
