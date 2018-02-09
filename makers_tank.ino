@@ -1,6 +1,7 @@
 // imports
 #include "PwmMotor.h"
 #include "Settings.h"
+#include <Servo.h>
 #include "I2C.h"
 
 // vars
@@ -21,6 +22,8 @@ PwmMotor pwm_manager(settings.DEBUG,
                      settings.THRESHOLD,
                      settings.DEBOUNCE_RATE);
 I2C i2c(settings.DEBUG, settings.I2C_ARDUINO);
+Servo left_track;
+Servo right_track;
 // MAIN LOOPS
 void setup() {
   // put your setup code here, to run once:
@@ -28,6 +31,9 @@ void setup() {
     Serial.begin(115200);
   }
   i2c.connect();
+  // attach motors to pin
+  left_track.attach(settings.LEFT_TRACK);
+  right_track.attach(settings.RIGHT_TRACK);
 }
 
 void loop() {
@@ -47,7 +53,7 @@ void loop() {
     // debouncer
     bounce_count = 0;
     pwm_manager.move_tracks(vertical, horizontal,
-                          settings.LEFT_TRACK, settings.RIGHT_TRACK);
+                            left_track, right_track);
   }
 
   String movement = horizontal + " " + vertical;
