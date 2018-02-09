@@ -14,7 +14,7 @@ Settings c1_configs = {
     128, // motor neutral
     4, // number of channels to read
     100, // threshold
-    0.25, // motor power modifier
+    0.75, // motor power modifier
     // controller calibration
     {  // min, mid, max
       {}, // right h
@@ -25,4 +25,5 @@ Settings c1_configs = {
     true, // debug mode
     12, // I2C arduino
     13, // I2C raspberry pi    
+    10, // debounce rate
 };

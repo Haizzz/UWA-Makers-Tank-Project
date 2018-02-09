@@ -6,13 +6,16 @@ int _motor_low;
 int _motor_neutral;
 int _motor_high;
 int _error_margin;
+int _debounce_rate;
+int _bounce_count = 0;
 // functions
-PwmMotor::PwmMotor(bool debug_option, int low, int neutral, int high, int error_margin) {
+PwmMotor::PwmMotor(bool debug_option, int low, int neutral, int high, int error_margin, int dr) {
   _debug = debug_option;
   _motor_low = low;
   _motor_neutral = neutral;
   _motor_high = high;
   _error_margin = error_margin;
+  _debounce_rate = dr;
 }
 
 int PwmMotor::read_pwm_channel(byte pwm_pin) {
@@ -115,6 +118,9 @@ void PwmMotor::move_tracks(float base, float turn, int left_pin, int right_pin) 
   float left_track = base;
   float right_track = base;
   unsigned int difference = base - _motor_neutral;
+  Serial.println('===');
+  Serial.println(base);
+  Serial.println(turn);
 
   if (base > _motor_neutral){
     // moving forward
@@ -130,7 +136,7 @@ void PwmMotor::move_tracks(float base, float turn, int left_pin, int right_pin) 
     } else if (turn < _motor_neutral) {
       left_track = left_track + difference;
     }
-  } else if ((base == 128.00) && (turn != 128.00)) {
+  } else if ((base == _motor_neutral) && (turn != _motor_neutral)) {
     // spot turn
     if (turn > _motor_neutral) {
       left_track = _motor_neutral + difference;

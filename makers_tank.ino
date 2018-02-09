@@ -8,15 +8,18 @@ Settings settings = c1_configs;  // see Settings.cpp
 int pwm_values[4] = {0, 0, 0, 0};
 int modfied_motor_high = settings.MOTOR_HIGH * settings.MOTOR_MODIFIER;
 int modfied_motor_low = settings.MOTOR_LOW / settings.MOTOR_MODIFIER;
+int bounce_count = 0;
 int pins[4] = {settings.PWM_RIGHT_H,
                settings.PWM_RIGHT_V,
                settings.PWM_LEFT_V,
                settings.PWM_LEFT_H};
+
 PwmMotor pwm_manager(settings.DEBUG,
                      modfied_motor_low,
                      settings.MOTOR_MID,
                      modfied_motor_high,
-                     settings.THRESHOLD);
+                     settings.THRESHOLD,
+                     settings.DEBOUNCE_RATE);
 I2C i2c(settings.DEBUG, settings.I2C_ARDUINO);
 // MAIN LOOPS
 void setup() {
@@ -38,8 +41,14 @@ void loop() {
                                                  settings.VALUE_RANGE[2]);
   int horizontal = pwm_manager.translate_pwm_motor(pwm_values[3],
                                                    settings.VALUE_RANGE[3]);
-  pwm_manager.move_tracks(vertical, horizontal,
+  bounce_count = bounce_count + 1;
+  Serial.println(bounce_count);
+  if (bounce_count == settings.DEBOUNCE_RATE) {
+    // debouncer
+    bounce_count = 0;
+    pwm_manager.move_tracks(vertical, horizontal,
                           settings.LEFT_TRACK, settings.RIGHT_TRACK);
+  }
 
   String movement = horizontal + " " + vertical;
   i2c.sendData(settings.I2C_RASPBERRY_PI, "motor control", movement);

@@ -22,6 +22,7 @@ struct Settings {
     bool DEBUG;
     int I2C_ARDUINO;
     int I2C_RASPBERRY_PI;
+    int DEBOUNCE_RATE;
 };
 
 extern Settings c1_configs;
