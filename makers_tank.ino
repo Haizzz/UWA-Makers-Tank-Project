@@ -38,24 +38,31 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // read pwm values and plug it into the array
-  int c_count;
-  for (c_count=0; c_count < settings.NUMBER_OF_CHANNELS; c_count++) {
-    pwm_values[c_count] = pwm_manager.read_pwm_channel(pins[c_count]);
+  // check input priority, analog controller has priority over all
+  int vertical = 0;
+  int horizontal = 0;
+  int signal_value = pwm_manager.read_pwm_channel(settings.ANALOG_SIGNAL_PIN);
+  if (signal_value > settings.VALUE_RANGE[4][1]) {
+    // read pwm values and plug it into the array
+    int c_count;
+    for (c_count=0; c_count < settings.NUMBER_OF_CHANNELS; c_count++) {
+      pwm_values[c_count] = pwm_manager.read_pwm_channel(pins[c_count]);
+    }
+    vertical = pwm_manager.translate_pwm_motor(pwm_values[2],
+                                               settings.VALUE_RANGE[2]);
+    horizontal = pwm_manager.translate_pwm_motor(pwm_values[3],
+                                                 settings.VALUE_RANGE[3]);
+    bounce_count = bounce_count + 1;
+    Serial.println(bounce_count);
+    if (bounce_count == settings.DEBOUNCE_RATE) {
+      // debouncer
+      bounce_count = 0;
+      pwm_manager.move_tracks(vertical, horizontal,
+                              left_track, right_track);
+    }
+  } else{
+    // use raspberry pi to control
   }
-  int vertical = pwm_manager.translate_pwm_motor(pwm_values[2],
-                                                 settings.VALUE_RANGE[2]);
-  int horizontal = pwm_manager.translate_pwm_motor(pwm_values[3],
-                                                   settings.VALUE_RANGE[3]);
-  bounce_count = bounce_count + 1;
-  Serial.println(bounce_count);
-  if (bounce_count == settings.DEBOUNCE_RATE) {
-    // debouncer
-    bounce_count = 0;
-    pwm_manager.move_tracks(vertical, horizontal,
-                            left_track, right_track);
-  }
-
   String movement = horizontal + " " + vertical;
   i2c.sendData(settings.I2C_RASPBERRY_PI, "motor control", movement);
 }
