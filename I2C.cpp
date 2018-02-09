@@ -47,3 +47,14 @@ void I2C::sendData(int destination, String header, String msg) {
   Wire.endTransmission();
   debug("sent");
 }
+
+String I2C::readData(int destination, int length) {
+  debug(String("Requesting " + length));
+  Wire.requestFrom(destination, length);
+  char result[length] = [];
+  int i;
+  for (i=0;i<length;++i) {
+    result[i] = Wire.read();
+  }
+  return result;
+}

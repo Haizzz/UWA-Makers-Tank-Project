@@ -11,6 +11,7 @@ class I2C {
         I2C(bool debugMode, int id);
         void connect();
         void sendData(int destination, String header, String msg);
+        String readData(int destination, int length);
 };
 
 #endif

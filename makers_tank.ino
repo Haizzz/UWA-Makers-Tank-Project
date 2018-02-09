@@ -51,5 +51,7 @@ void loop() {
   }
 
   String movement = horizontal + " " + vertical;
-  i2c.sendData(settings.I2C_RASPBERRY_PI, "motor control", movement);
+  i2c.sendData(settings.I2C_RASPBERRY_PI, "mc", movement);
+  String i2cRead = i2c.readData(settings.I2C_RASPBERRY_PI, 9);
+  Serial.println(i2cRead);
 }
